@@ -24,9 +24,9 @@
 #     rose metadata-gen [OPTIONS] [PROPERTY=VALUE ...]
 #
 # DESCRIPTION
-#    Automatically generate metadata from an application or suite
-#    configuration. An aid for metadata development.
-#    WARNING - May Contain Thorns.
+#     Automatically generate metadata from an application or suite
+#     configuration. An aid for metadata development.
+#     WARNING - May Contain Thorns.
 #
 # OPTIONS
 #     --auto-type
