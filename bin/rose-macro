@@ -26,7 +26,7 @@
 # DESCRIPTION
 #     List or run macros associated with a suite or application.
 #
-# OPTION
+# OPTIONS
 #     --all; -a
 #         List or run rose internal macros as well as metadata macros.
 #     --config=DIR; -C DIR

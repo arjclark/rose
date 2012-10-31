@@ -1,5 +1,9 @@
+#!/usr/bin/env python
+
 import os
 import sys
+
+import command_pages
 
 #os.getenv("ROSE_HOME")
 sys.path.append("../lib/python/")
@@ -10,6 +14,9 @@ CMD_HELP_FORMAT = "{0} help {1}"
 CODE_FORMAT = "<kbd>{0}</kbd>"
 H2_FORMAT = "<h2>{0}</h2>"
 SECTION_ANCHOR = "<a NAME=\"{0}-{1}\">"
+KNOWN_SECTIONS = ["NAME","SYNOPSIS", "DESCRIPTION", "OPTION", "CONFIGURATION",
+                  "ARGUMENTS", "SEE ALSO", "NOTE ON CYCLE TIME", "ENVIRONMENT"]
+
 
 def html_writer(content=None):
     """generate the appropriate html code"""
@@ -24,7 +31,7 @@ def html_writer(content=None):
     for c in cmds['rose']:
         if c is not "":
             print "<hr/>"
-            print SECTION_ANCHOR.format('rose', c) + "rose " + c + "</a><br>"
+            print SECTION_ANCHOR.format('rose', c) + "<h2>rose " + c + "</h2></a><br>"
             cmd_hlp = help_grabber("rose", c)
             cmd_hlp = cmd_hlp_formatter(cmd_hlp, "rose", c)
             for l in cmd_hlp:
@@ -33,7 +40,7 @@ def html_writer(content=None):
     for c in cmds['rosie']:
         if c is not "":
             print "<hr/>"
-            print SECTION_ANCHOR.format('rosie', c) + "rosie " + c + "</a><br>"
+            print SECTION_ANCHOR.format('rosie', c) + "<h2>rosie " + c + "</h2></a><br>"
             cmd_hlp = help_grabber("rosie", c)
             cmd_hlp = cmd_hlp_formatter(cmd_hlp, "rosie", c)
             for l in cmd_hlp:
@@ -42,8 +49,17 @@ def html_writer(content=None):
 
 def cmd_hlp_formatter(content, prog, cmd):
     """html format help from program commands"""
+
+    keys = []
+    
+    for row in content:
+        if row.split(" ")[0].isupper():
+            keys.append(row.split(" ")[0])
+    
+    cmd_page = command_pages.CmdPage(keys, prog, cmd)
     
     mode = "reading"
+
     for i, row in enumerate(content):
     
         if row.startswith("NAME"):
@@ -54,25 +70,34 @@ def cmd_hlp_formatter(content, prog, cmd):
             mode = "synopsis"
         elif row.startswith("OPTION"):
             mode = "option"
+        elif row.split(" ")[0].isupper():
+            mode = row.split(" ")[0]
 
         if mode == "name":
+            cmd_page.content['NAME'].append(row)
             if row.startswith(" "*4 + prog):
                 content[i] = "<kbd>"+ row + "</kbd><br>"
             else:
                 content[i] = row + "<br>"
         elif mode == "synopsis":
+            cmd_page.content['SYNOPSIS'].append(row)
             if row.startswith(" "*4 + prog):
                 content[i] = "<kbd>"+ row + "</kbd><br>"
             else:
                 content[i] = row + "<br>"
         elif mode == "option":
+            cmd_page.content['OPTION'].append(row)
             if row.startswith(" "*4 + "-"):
                 content[i] = "<kbd>"+ row + "</kbd><br>"
             else:
                 content[i] = row + "<br>"
         else:
+            cmd_page.content[mode].append(row)
             content[i] = row + "<br>"
 
+    print "cmd formatter printed this:"
+    cmd_page.print_html()
+    
                                         
     return content
 
