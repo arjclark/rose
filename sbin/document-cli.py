@@ -23,7 +23,6 @@ def html_writer(content=None):
 
     content, cmds = prog_hlp_formatter(content)
 
-    #print "<pre>"
     for row in content:
         if not row == "":
             print row
@@ -31,7 +30,7 @@ def html_writer(content=None):
     for c in cmds['rose']:
         if c is not "":
             print "<hr/>"
-            print SECTION_ANCHOR.format('rose', c) + "<h2>rose " + c + "</h2></a><br>"
+            print "<h2>"+ SECTION_ANCHOR.format('rose', c) + "rose " + c + "</a></h2><br>"
             cmd_hlp = help_grabber("rose", c)
             cmd_hlp = cmd_hlp_formatter(cmd_hlp, "rose", c)
             for l in cmd_hlp:
@@ -40,12 +39,11 @@ def html_writer(content=None):
     for c in cmds['rosie']:
         if c is not "":
             print "<hr/>"
-            print SECTION_ANCHOR.format('rosie', c) + "<h2>rosie " + c + "</h2></a><br>"
+            print "<h2>" + SECTION_ANCHOR.format('rosie', c) + "rosie " + c + "</a></h2><br>"
             cmd_hlp = help_grabber("rosie", c)
             cmd_hlp = cmd_hlp_formatter(cmd_hlp, "rosie", c)
             for l in cmd_hlp:
                 print l
-    #print "</pre>"
 
 def cmd_hlp_formatter(content, prog, cmd):
     """html format help from program commands"""
@@ -100,10 +98,10 @@ def prog_hlp_formatter(content):
     for i, row in enumerate(content):
         if not row.startswith("usage: "):
             if row.startswith("rose"):
-                content[i] = row.replace("rose", CODE_FORMAT.format("rose"), 1) + "<br>"
+                content[i] = "<p>" + row.replace("rose", CODE_FORMAT.format("rose"), 1) + "<br><br>\n<dl>"
                 curr_block = "rose"
             elif row.startswith("rosie"):
-                content[i] = row.replace("rosie", CODE_FORMAT.format("rosie"), 1) + "<br>"
+                content[i] = "<p>" + row.replace("rosie", CODE_FORMAT.format("rosie"), 1) + "<br><br>\n<dl>"
                 curr_block = "rosie"
             else:
                 if row.startswith(" "*4) and not row.startswith(" "*8):
@@ -114,14 +112,16 @@ def prog_hlp_formatter(content):
                     else:
                         if not cmd.endswith("~"):
                             cmds[curr_block].append(cmd)
-                    tmp[4] = BOOKMARK_LINK.format(curr_block, tmp[4])+"</a>"
-                    content[i] = " ".join(tmp) + " - "
+                    tmp[4] = BOOKMARK_LINK.format(curr_block, tmp[4])
+                    tmp[4] = "<dt>" + tmp[4] + "</dt>"
+                    content[i] = " ".join(tmp)
                 elif row.startswith(" ") and (not row.startswith(" "*4)) and (not row.startswith(" "*8)):
                     warnings['indentation'] += 1
-                else:
-                    content[i] = row + "<br>"
+                elif row.strip(" ") is not "":
+                    content[i] = "<dd>" + row + "</dd>"
         else:
              content[i] = ""    
+    content.append("</dl></p>")
     
     return content, cmds
     
