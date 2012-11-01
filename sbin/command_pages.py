@@ -24,11 +24,13 @@ class CmdPage():
         content = self.content['NAME']
         
         for i, row in enumerate(content):
-            if row.strip(" ").startswith(self.program):
+            if row.startswith("NAME"):
+                content[i] = ""
+            elif row.strip(" ").startswith(self.program):
                 content[i] = "<kbd>"+ row + "</kbd><br>"
             else:
                 content[i] = row + "<br>"
-        content.insert(0, H3_MASK.format('NAME'))
+        content.insert(0, self.H3_MASK.format('NAME'))
         return content
         
     def convert_synopsis(self):
@@ -37,21 +39,25 @@ class CmdPage():
         content = self.content['SYNOPSIS']
         
         for i, row in enumerate(content):
-            if row.startswith(" "*4 + prog):
+            if row.startswith("SYNOPSIS"):#
+                content[i] = ""
+            elif row.startswith(" "*4 + self.program):
                 content[i] = "<kbd>"+ row + "</kbd><br>"
             else:
                 content[i] = row + "<br>"
         
-        content.insert(0, H3_MASK.format('SYNOPSIS'))
+        content.insert(0, self.H3_MASK.format('SYNOPSIS'))
         return content
         
     def convert_option(self):
         """Format options text to html"""
         
-        content = self.content['OPTION']
+        content = self.content['OPTIONS']
         
-        for i, row in enumerate(content):    
-            if row.startswith(" "*4 + "-"):
+        for i, row in enumerate(content):
+            if row.startswith("OPTION"):
+                content[i] = ""
+            elif row.startswith(" "*4 + "-"):
                 content[i] = "<dt><kbd>"+ row + "</kbd></dt>"
             else:
                 content[i] = "<dd>" + row + "</dd>"
@@ -59,8 +65,36 @@ class CmdPage():
         content.insert(0, "<dl>")
         content.append("</dl>")
         
-        content.insert(0, H3_MASK.format('OPTION'))
+        content.insert(0, self.H3_MASK.format('OPTIONS'))
         
+        return content
+
+    def convert_description(self):
+    
+        content = self.content['DESCRIPTION']
+        """
+        for i, row in enumerate(content):
+            if row.startswith("DESCRIPTION"):
+                content[i] = "<pre>"
+        content.append("</pre>")
+        """
+        
+        content.insert(0, self.H3_MASK.format('DESCRIPTION'))
+        
+        return content
+
+    def convert_arguments(self):
+    
+        content = self.content['ARGUMENTS']
+        for i, row in enumerate(content):
+            if row.startswith("ARGUMENTS"):
+                content[i] = ""
+            elif row.split(" ")[0].isupper():
+                content[i] = "<td><kbd>" + row + "</kbd></dt>"
+            else:
+                content[i] = "<dd>" + row + "</dd>"
+        
+        content.insert(0, self.H3_MASK.format('ARGUMENTS'))
         return content
 
     def convert_other(self, key):
@@ -69,27 +103,34 @@ class CmdPage():
         content = self.content[key]
         
         for i, row in enumerate(content):
-            content[i] = row + "<br>"    
+            if content[i].startswith(key):
+                content[i] = ""
+            else:
+                content[i] = row + "<br>"    
         
-        content.insert(0, H3_MASK.format(key.upper()))
+        content.insert(0, self.H3_MASK.format(key.upper()))
         return content
         
         
-    def print_html(self):
+    def get_html(self):
     
-        print H2_MASK.format(self.program, self.command)
+        content = []
+    
+        #content += [self.H2_MASK.format(self.program, self.command)]
     
         for k in self.known_sections:
             #grab formatted code
             if k == "NAME":
-                c = self.convert_name()
+                content += self.convert_name()
             elif k == "SYNOPSIS":
-                c = self.convert_synopsis()
-            elif k == "OPTION":
-                c = self.convert_option()
+                content += self.convert_synopsis()
+            elif k == "OPTIONS":
+                content += self.convert_option()
+            #elif k == "DESCRIPTION":
+            #    content += self.convert_description()
+            elif k == "ARGUMENTS":
+                content += self.convert_arguments()
             else:
-                c = self.convert_other(k)
-            #print it    
-            for l in c:
-                print l
-            
+                content += self.convert_other(k)
+
+        return content            

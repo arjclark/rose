@@ -14,7 +14,7 @@ CMD_HELP_FORMAT = "{0} help {1}"
 CODE_FORMAT = "<kbd>{0}</kbd>"
 H2_FORMAT = "<h2>{0}</h2>"
 SECTION_ANCHOR = "<a NAME=\"{0}-{1}\">"
-KNOWN_SECTIONS = ["NAME","SYNOPSIS", "DESCRIPTION", "OPTION", "CONFIGURATION",
+KNOWN_SECTIONS = ["NAME","SYNOPSIS", "DESCRIPTION", "OPTIONS", "CONFIGURATION",
                   "ARGUMENTS", "SEE ALSO", "NOTE ON CYCLE TIME", "ENVIRONMENT"]
 
 
@@ -56,6 +56,10 @@ def cmd_hlp_formatter(content, prog, cmd):
         if row.split(" ")[0].isupper():
             keys.append(row.split(" ")[0])
     
+    for i, k in enumerate(keys):
+        if k == "OPTION":
+            k[i] = "OPTIONS"
+    
     cmd_page = command_pages.CmdPage(keys, prog, cmd)
     
     mode = "reading"
@@ -65,7 +69,7 @@ def cmd_hlp_formatter(content, prog, cmd):
         if row.startswith("NAME"):
             mode = "name"
         elif row.startswith("DESCRIPTION"):
-            mode = "description"
+            mode = "DESCRIPTION"
         elif row.startswith("SYNOPSIS"):
             mode = "synopsis"
         elif row.startswith("OPTION"):
@@ -75,28 +79,14 @@ def cmd_hlp_formatter(content, prog, cmd):
 
         if mode == "name":
             cmd_page.content['NAME'].append(row)
-            if row.startswith(" "*4 + prog):
-                content[i] = "<kbd>"+ row + "</kbd><br>"
-            else:
-                content[i] = row + "<br>"
         elif mode == "synopsis":
             cmd_page.content['SYNOPSIS'].append(row)
-            if row.startswith(" "*4 + prog):
-                content[i] = "<kbd>"+ row + "</kbd><br>"
-            else:
-                content[i] = row + "<br>"
         elif mode == "option":
-            cmd_page.content['OPTION'].append(row)
-            if row.startswith(" "*4 + "-"):
-                content[i] = "<kbd>"+ row + "</kbd><br>"
-            else:
-                content[i] = row + "<br>"
+            cmd_page.content['OPTIONS'].append(row)
         else:
             cmd_page.content[mode].append(row)
-            content[i] = row + "<br>"
 
-    print "cmd formatter printed this:"
-    cmd_page.print_html()
+    content = cmd_page.get_html()
     
                                         
     return content

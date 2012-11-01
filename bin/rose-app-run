@@ -35,7 +35,7 @@
 #        variable, then the value of the setting is used as the command.
 #     4. Invoke the command specified in [command]default.
 #
-# OPTION
+# OPTIONS
 #     --config=DIR; -C DIR
 #         Specify the configuration directory of the application. (default=$PWD)
 #     --command-key=KEY; -c KEY
