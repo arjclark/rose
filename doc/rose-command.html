@@ -517,10 +517,10 @@
 
     <p>
     <pre>
-    rose stem --diffsource=$PWD<br>
-    rose stem --source=fcm:source_tr@head --task=myjob<br>
-    rose stem --source=$PWD -C ~/roses/mot-aa121 --task=myjob --task=yourjob<br>
-    </pre>
+    rose stem --diffsource=$PWD
+    rose stem --source=fcm:source_tr@head --task=myjob
+    rose stem --source=$PWD -C ~/roses/mot-aa121 --task=myjob --task=yourjob
+</pre>
     </p>
 
     <h3>OPTIONS</h3>
@@ -538,269 +538,289 @@
         <dt><kbd>--task=TASK, -t TASK</kbd></dt>
         <dd>Specify a task name or group to run.</dd>
     </dl>
+    </p>
     
-<h2><a NAME="rose-suite-gcontrol">rose suite-gcontrol</a></h2><br>
-<h3>NAME</h3>
+    <h2><a NAME="rose-suite-gcontrol">rose suite-gcontrol</a></h2>
+    <h3>NAME</h3>
+    <p><kbd>rose suite-gcontrol</kbd></p>
 
-<kbd>    rose suite-gcontrol</kbd><br>
-<br>
-<h3>SYNOPSIS</h3>
+    <h3>SYNOPSIS</h3>
 
-<kbd>    rose suite-gcontrol [OPTIONS] [SUITE]</kbd><br>
-<kbd>    rose suite-gcontrol [OPTIONS] -- GCONTROL-ARGS SUITE</kbd><br>
-<br>
-<h3>DESCRIPTION</h3>
+    <p><kbd>rose suite-gcontrol [OPTIONS] [SUITE]</kbd></p>
+    <p><kbd>rose suite-gcontrol [OPTIONS] -- GCONTROL-ARGS SUITE</kbd></p>
 
-    Launch suite engine's suite control GUI for a suite.<br>
-<br>
-    If no argument is specified, the basename of $PWD is assumed to be the<br>
-    suite name.<br>
-<br>
-    This wrapper is to deal with the use case where a suite may be running on<br>
-    dedicated servers at a site. The wrapper will make an attempt to detect<br>
-    where the suite is running or last run.<br>
-<br>
-<h3>OPTIONS</h3>
-<dl>
+    <h3>DESCRIPTION</h3>
 
-<dt><kbd>    --host=HOST</kbd></dt>
-<dd>        Specify a host.</dd>
-<dt><kbd>    --quiet, -q</kbd></dt>
-<dd>        Decrement verbosity.</dd>
-<dt><kbd>    --verbose, -v</kbd></dt>
-<dd>        Increment verbosity.</dd>
-<dd></dd>
-</dl>
-<h2><a NAME="rose-suite-hook">rose suite-hook</a></h2><br>
-<h3>NAME</h3>
+    <p>Launch suite engine's suite control GUI for a suite.</p>
 
-<kbd>    rose-suite-hook</kbd><br>
-<br>
-<h3>SYNOPSIS</h3>
+    <p>If no argument is specified, the basename of $PWD is assumed to be the
+    suite name.</p>
 
-    # Cylc interface<br>
-<kbd>    rose suite-hook [OPTIONS] EVENT SUITE MSG</kbd><br>
-<kbd>    rose task-hook [OPTIONS] EVENT SUITE TASK_ID MSG</kbd><br>
-<br>
-<h3>DESCRIPTION</h3>
+    <p>This wrapper is to deal with the use case where a suite may be running on
+    dedicated servers at a site. The wrapper will make an attempt to detect
+    where the suite is running or last run.</p>
 
-    Provide a common event hook for Cylc suites and tasks.<br>
-    * (Task event only) Pull remote task logs back to server host.<br>
-    * Generate suite log view.<br>
-    * Email user if --mail specified.<br>
-    * Shutdown suite if --shutdown specified.<br>
-<br>
-<h3>OPTIONS</h3>
-<dl>
+    <h3>OPTIONS</h3>
 
-<dt><kbd>    --debug</kbd></dt>
-<dd>        Switch on debug mode.</dd>
-<dt><kbd>    --mail-cc=LIST</kbd></dt>
-<dd>        Only useful if the --mail-if=LIST option is specified. Specify a</dd>
-<dd>        comma separated list of additional addresses to email.</dd>
-<dt><kbd>    --mail</kbd></dt>
-<dd>        Trigger an email notification to the user.</dd>
-<dt><kbd>    --shutdown</kbd></dt>
-<dd>        Trigger a shutdown of the suite.</dd>
-<dt><kbd>    --quiet; -q</kbd></dt>
-<dd>        Decrement verbosity.</dd>
-<dt><kbd>    --verbose; -v</kbd></dt>
-<dd>        Increment verbosity.</dd>
-<dd></dd>
-</dl>
-<h2><a NAME="rose-suite-init">rose suite-init</a></h2><br>
-<h3>NAME</h3>
+    <p>
+    <dl>
+        <dt><kbd>--host=HOST</kbd></dt>
+        <dd>Specify a host.</dd>
+        <dt><kbd>--quiet, -q</kbd></dt>
+        <dd>Decrement verbosity.</dd>
+        <dt><kbd>--verbose, -v</kbd></dt>
+        <dd>Increment verbosity.</dd>
+    </dl>
+    
+    <h2><a NAME="rose-suite-hook">rose suite-hook</a></h2>
+    <h3>NAME</h3>
+    <p><kbd>rose-suite-hook</kbd></p>
 
-<kbd>    rose suite-run</kbd><br>
-<br>
-<h3>SYNOPSIS</h3>
+    <h3>SYNOPSIS</h3>
+    <p>Cylc interface:</p>
+    <p><kbd>rose suite-hook [OPTIONS] EVENT SUITE MSG</kbd></p>
 
-<kbd>    rose suite-run [OPTIONS] [[--] CYLC-RUN-ARGS]</kbd><br>
-    # Install the suite in $PWD, and register it using basename of $PWD.<br>
-<kbd>    rose suite-run</kbd><br>
-    # As above, but start the suite in simulation mode.<br>
-<kbd>    rose suite-run -- --mode=simulation</kbd><br>
-    # Install the suite in $PWD, and register it as "my.suite".<br>
-<kbd>    rose suite-run -N my.suite</kbd><br>
-    # Install the suite in "/dir/to/suite", and register it as "my.suite".<br>
-<kbd>    rose suite-run -C /dir/to/my.suite</kbd><br>
-    # Equivalent to (cd /dir/to/my.suite && rose suite-run)<br>
-<kbd>    rose suite-run -C /dir/to/suite -N my.suite</kbd><br>
-    # Equivalent to (cd /dir/to/suite && rose suite-run my.suite)<br>
-<br>
-<h3>DESCRIPTION</h3>
+    <h3>DESCRIPTION</h3>
 
-    Install and run a Cylc suite.<br>
-<br>
-    Install a suite (in $PWD), register it in Cylc using the basename of the<br>
-    configuration directory or the option specified in --name=NAME. Invoke<br>
-    "cylc run" on it. Arguments (and options after --) are passed to "cylc<br>
-    run".<br>
-<br>
-<h3>OPTIONS</h3>
-<dl>
+    <p>Provide a common event hook for Cylc suites and tasks.
+    <ul>
+        <li>(Task event only) Pull remote task logs back to server host.</li>
+        <li>Generate suite log view.</li>
+        <li>Email user if --mail specified.</li>
+        <li>Shutdown suite if --shutdown specified.</li>
+    </ul>
 
-<dt><kbd>    --config=DIR, -C DIR</kbd></dt>
-<dd>        Specify the configuration directory of the suite. (default=$PWD)</dd>
-<dt><kbd>    --define=[SECTION]KEY=VALUE; -D [SECTION]KEY=VALUE</kbd></dt>
-<dd>        Each of this overrides the [SECTION]KEY setting with a given VALUE.</dd>
-<dd>        Can be used to disable a setting using the syntax --define=[SECTION]!KEY</dd>
-<dd>        or even --define=[!SECTION].</dd>
-<dt><kbd>    --force, -f</kbd></dt>
-<dd>        Reinstall the suite even if it is already running.</dd>
-<dt><kbd>    --host=HOST</kbd></dt>
-<dd>        Specify a host for running the suite.</dd>
-<dt><kbd>    --install-only, -i</kbd></dt>
-<dd>        Install the suite, but do not run it. (This option is implied if</dd>
-<dd>        --force mode is specified and the suite is already running.)</dd>
-<dt><kbd>    --name=NAME, -n NAME</kbd></dt>
-<dd>        Specify the suite NAME in Cylc, instead of using the basename of the</dd>
-<dd>        configuration directory.</dd>
-<dt><kbd>    --new, -N</kbd></dt>
-<dd>        (Re-)create working directories.</dd>
-<dt><kbd>    --no-gcontrol</kbd></dt>
-<dd>        Do not run "cylc gcontrol". Default is to run "cylc gcontrol" if the</dd>
-<dd>        DISPLAY environment variable is defined.</dd>
-<dt><kbd>    --no-overwrite</kbd></dt>
-<dd>        Do not overwrite existing files.</dd>
-<dt><kbd>    --opt-conf-key=KEY, -O KEY</kbd></dt>
-<dd>        Each of this switches on an optional configuration identified by KEY.</dd>
-<dt><kbd>    --quiet, -q</kbd></dt>
-<dd>        Decrement verbosity.</dd>
-<dt><kbd>    --verbose, -v</kbd></dt>
-<dd>        Increment verbosity.</dd>
-<dd></dd>
-</dl>
-<h3>ENVIRONMENT</h3>
+    <h3>OPTIONS</h3>
 
-    "rose suite-run" provides the following environment variables to the suite.<br>
-<br>
-    ROSE_ORIG_HOST<br>
-        The name of the host where the "rose suite-run" command was invoked.<br>
-<br>
-<h3>JINJA2</h3>
+    <p>
+    <dl>
+        <dt><kbd>--debug</kbd></dt>
+        <dd>Switch on debug mode.</dd>
+        <dt><kbd>--mail-cc=LIST</kbd></dt>
+        <dd>Only useful if the --mail-if=LIST option is specified. Specify a
+        comma separated list of additional addresses to email.</dd>
+        <dt><kbd>--mail</kbd></dt>
+        <dd>Trigger an email notification to the user.</dd>
+        <dt><kbd>--shutdown</kbd></dt>
+        <dd>Trigger a shutdown of the suite.</dd>
+        <dt><kbd>--quiet; -q</kbd></dt>
+        <dd>Decrement verbosity.</dd>
+        <dt><kbd>--verbose; -v</kbd></dt>
+        <dd>Increment verbosity.</dd>
+    </dl>
+    </p>
+    
+    <h2><a NAME="rose-suite-init">rose suite-init</a></h2>
+    <h3>NAME</h3>
 
-    "rose suite-run" provides the following Jinja2 variables to the suite.<br>
-<br>
-    ROSE_ORIG_HOST<br>
-        The name of the host where the "rose suite-run" command was invoked.<br>
-        <br>
-<h3>SEE</h3>
+    <p><kbd>rose suite-run</kbd></p>
+    <h3>SYNOPSIS</h3>
+    <p>
+    <dl>
+        <dt><kbd>rose suite-run [OPTIONS] [[--] CYLC-RUN-ARGS]</kbd></dt>
+        <dd>Install the suite in $PWD, and register it using basename of $PWD.</dd>
+        <dt><kbd>rose suite-run</kbd></dt>
+        <dd>As above, but start the suite in simulation mode.</dd>
+        <dt><kbd>rose suite-run -- --mode=simulation</kbd></dt>
+        <dd>Install the suite in $PWD, and register it as "my.suite".</dd>
+        <dt><kbd>rose suite-run -N my.suite</kbd></dt>
+        <dd>Install the suite in "/dir/to/suite", and register it as "my.suite".</dd>
+        <dt><kbd>rose suite-run -C /dir/to/my.suite</kbd></dt>
+        <dd>Equivalent to (cd /dir/to/my.suite && rose suite-run)</dd>
+        <dt><kbd>rose suite-run -C /dir/to/suite -N my.suite</kbd></dt>
+        <dd>Equivalent to (cd /dir/to/suite && rose suite-run my.suite)</dd>
+    </dl>
+    </p>
 
-    "cylc help gcontrol"<br>
-    "cylc help register"<br>
-    "cylc help run"<br>
-<br>
-<h2><a NAME="rose-suite-log-view">rose suite-log-view</a></h2><br>
-<h3>NAME</h3>
+    <h3>DESCRIPTION</h3>
 
-<kbd>    rose suite-log-view</kbd><br>
-<br>
-<h3>SYNOPSIS</h3>
+    <p>Install and run a Cylc suite.</p>
 
-<kbd>    rose suite-log-view [OPTIONS] [SUITE]</kbd><br>
-<br>
-<h3>DESCRIPTION</h3>
+    <p>Install a suite (in $PWD), register it in Cylc using the basename of the
+    configuration directory or the option specified in --name=NAME. Invoke
+    "cylc run" on it. Arguments (and options after --) are passed to "cylc
+    run".</p>
 
-    Generate and browse the log view of SUITE.<br>
-<br>
-    Analyse the suite log to generate a JSON file for feeding into an HTML<br>
-    based viewer. SUITE should be a valid suite name. If not defined, use<br>
-    `basename $PWD`.<br>
-<br>
-    If the DISPLAY environment variable is defined. Launch the web browser to<br>
-    display the log view unless --no-web-browse is specified.<br>
-<br>
-<h3>OPTIONS</h3>
-<dl>
+    <h3>OPTIONS</h3>
 
-<dt><kbd>    --no-web-browse</kbd></dt>
-<dd>        Do not open a web browser to display the log view.</dd>
-<dd></dd>
-</dl>
-<h2><a NAME="rose-suite-run">rose suite-run</a></h2><br>
-<h3>NAME</h3>
+    <p>
+    <dl>
+        <dt><kbd>--config=DIR, -C DIR</kbd></dt>
+        <dd>Specify the configuration directory of the suite. (default=$PWD)</dd>
+        <dt><kbd>--define=[SECTION]KEY=VALUE; -D [SECTION]KEY=VALUE</kbd></dt>
+        <dd>Each of this overrides the [SECTION]KEY setting with a given VALUE.
+        Can be used to disable a setting using the syntax --define=[SECTION]!KEY
+        or even --define=[!SECTION].</dd>
+        <dt><kbd>--force, -f</kbd></dt>
+        <dd>Reinstall the suite even if it is already running.</dd>
+        <dt><kbd>--host=HOST</kbd></dt>
+        <dd>Specify a host for running the suite.</dd>
+        <dt><kbd>--install-only, -i</kbd></dt>
+        <dd>Install the suite, but do not run it. (This option is implied if
+        --force mode is specified and the suite is already running.)</dd>
+        <dt><kbd>--name=NAME, -n NAME</kbd></dt>
+        <dd>Specify the suite NAME in Cylc, instead of using the basename of the
+        configuration directory.</dd>
+        <dt><kbd>--new, -N</kbd></dt>
+        <dd>(Re-)create working directories.</dd>
+        <dt><kbd>--no-gcontrol</kbd></dt>
+        <dd>Do not run "cylc gcontrol". Default is to run "cylc gcontrol" if the
+        DISPLAY environment variable is defined.</dd>
+        <dt><kbd>--no-overwrite</kbd></dt>
+        <dd>Do not overwrite existing files.</dd>
+        <dt><kbd>--opt-conf-key=KEY, -O KEY</kbd></dt>
+        <dd>Each of this switches on an optional configuration identified by KEY.</dd>
+        <dt><kbd>--quiet, -q</kbd></dt>
+        <dd>Decrement verbosity.</dd>
+        <dt><kbd>--verbose, -v</kbd></dt>
+        <dd>Increment verbosity.</dd>
+    </dl>
+    </p>
+    
+    <h3>ENVIRONMENT</h3>
 
-<kbd>    rose suite-run</kbd><br>
-<br>
-<h3>SYNOPSIS</h3>
+    <p>"rose suite-run" provides the following environment variables to the suite:
+    <dl>
+        <dt>ROSE_ORIG_HOST</dt>
+        <dd>The name of the host where the "rose suite-run" command was invoked.</dd>
+    </dl>
+    </p>
+    
+    <h3>JINJA2</h3>
 
-<kbd>    rose suite-run [OPTIONS] [[--] CYLC-RUN-ARGS]</kbd><br>
-    # Install the suite in $PWD, and register it using basename of $PWD.<br>
-<kbd>    rose suite-run</kbd><br>
-    # As above, but start the suite in simulation mode.<br>
-<kbd>    rose suite-run -- --mode=simulation</kbd><br>
-    # Install the suite in $PWD, and register it as "my.suite".<br>
-<kbd>    rose suite-run -N my.suite</kbd><br>
-    # Install the suite in "/dir/to/suite", and register it as "my.suite".<br>
-<kbd>    rose suite-run -C /dir/to/my.suite</kbd><br>
-    # Equivalent to (cd /dir/to/my.suite && rose suite-run)<br>
-<kbd>    rose suite-run -C /dir/to/suite -N my.suite</kbd><br>
-    # Equivalent to (cd /dir/to/suite && rose suite-run my.suite)<br>
-<br>
-<h3>DESCRIPTION</h3>
+    <p>"rose suite-run" provides the following Jinja2 variables to the suite.
+    <dl>
+        <dt>ROSE_ORIG_HOST</dt>
+        <dd>The name of the host where the "rose suite-run" command was invoked.</dd>
+    </dl>
+    </p>
 
-    Install and run a Cylc suite.<br>
-<br>
-    Install a suite (in $PWD), register it in Cylc using the basename of the<br>
-    configuration directory or the option specified in --name=NAME. Invoke<br>
-    "cylc run" on it. Arguments (and options after --) are passed to "cylc<br>
-    run".<br>
-<br>
-<h3>OPTIONS</h3>
-<dl>
+    <h3>SEE ALSO</h3>
 
-<dt><kbd>    --config=DIR, -C DIR</kbd></dt>
-<dd>        Specify the configuration directory of the suite. (default=$PWD)</dd>
-<dt><kbd>    --define=[SECTION]KEY=VALUE; -D [SECTION]KEY=VALUE</kbd></dt>
-<dd>        Each of this overrides the [SECTION]KEY setting with a given VALUE.</dd>
-<dd>        Can be used to disable a setting using the syntax --define=[SECTION]!KEY</dd>
-<dd>        or even --define=[!SECTION].</dd>
-<dt><kbd>    --force, -f</kbd></dt>
-<dd>        Reinstall the suite even if it is already running.</dd>
-<dt><kbd>    --host=HOST</kbd></dt>
-<dd>        Specify a host for running the suite.</dd>
-<dt><kbd>    --install-only, -i</kbd></dt>
-<dd>        Install the suite, but do not run it. (This option is implied if</dd>
-<dd>        --force mode is specified and the suite is already running.)</dd>
-<dt><kbd>    --name=NAME, -n NAME</kbd></dt>
-<dd>        Specify the suite NAME in Cylc, instead of using the basename of the</dd>
-<dd>        configuration directory.</dd>
-<dt><kbd>    --new, -N</kbd></dt>
-<dd>        (Re-)create working directories.</dd>
-<dt><kbd>    --no-gcontrol</kbd></dt>
-<dd>        Do not run "cylc gcontrol". Default is to run "cylc gcontrol" if the</dd>
-<dd>        DISPLAY environment variable is defined.</dd>
-<dt><kbd>    --no-overwrite</kbd></dt>
-<dd>        Do not overwrite existing files.</dd>
-<dt><kbd>    --opt-conf-key=KEY, -O KEY</kbd></dt>
-<dd>        Each of this switches on an optional configuration identified by KEY.</dd>
-<dt><kbd>    --quiet, -q</kbd></dt>
-<dd>        Decrement verbosity.</dd>
-<dt><kbd>    --verbose, -v</kbd></dt>
-<dd>        Increment verbosity.</dd>
-<dd></dd>
-</dl>
-<h3>ENVIRONMENT</h3>
+    <p><kbd>cylc help gcontrol</kbd></p>
+    <p><kbd>cylc help register</kbd></p>
+    <p><kbd>cylc help run</kbd></p>
 
-    "rose suite-run" provides the following environment variables to the suite.<br>
-<br>
-    ROSE_ORIG_HOST<br>
-        The name of the host where the "rose suite-run" command was invoked.<br>
-<br>
-<h3>JINJA2</h3>
+    <h2><a NAME="rose-suite-log-view">rose suite-log-view</a></h2>
+    
+    <h3>NAME</h3>
+    <p><kbd>rose suite-log-view</kbd></p>
 
-    "rose suite-run" provides the following Jinja2 variables to the suite.<br>
-<br>
-    ROSE_ORIG_HOST<br>
-        The name of the host where the "rose suite-run" command was invoked.<br>
-        <br>
-<h3>SEE</h3>
+    <h3>SYNOPSIS</h3>
+    <p><kbd>    rose suite-log-view [OPTIONS] [SUITE]</kbd></p>
 
-    "cylc help gcontrol"<br>
-    "cylc help register"<br>
-    "cylc help run"<br>
-<br>
+    <h3>DESCRIPTION</h3>
+
+    <p>Generate and browse the log view of SUITE.</p>
+
+    <p>Analyse the suite log to generate a JSON file for feeding into an HTML
+    based viewer. SUITE should be a valid suite name. If not defined, use
+    `basename $PWD`.</p>
+
+    <p>If the DISPLAY environment variable is defined. Launch the web browser to
+    display the log view unless --no-web-browse is specified.</p>
+    
+    <h3>OPTIONS</h3>
+    <p>
+    <dl>
+        <dt><kbd>--no-web-browse</kbd></dt>
+        <dd>Do not open a web browser to display the log view.</dd>
+    </dl>
+    </p>
+    
+    <h2><a NAME="rose-suite-run">rose suite-run</a></h2>
+    <h3>NAME</h3>
+    <p><kbd>rose suite-run</kbd><p>
+
+    <h3>SYNOPSIS</h3>
+    
+    <p>
+    <dl>
+        <dt><kbd>rose suite-run [OPTIONS] [[--] CYLC-RUN-ARGS]</kbd></dt>
+        <dd>Install the suite in $PWD, and register it using basename of $PWD.</dd>
+        <dt><kbd>rose suite-run</kbd></dt>
+        <dd>As above, but start the suite in simulation mode.</dd>
+        <dt><kbd>rose suite-run -- --mode=simulation</kbd></dt>
+        <dd>Install the suite in $PWD, and register it as "my.suite".</dd>
+        <dt><kbd>rose suite-run -N my.suite</kbd></dt>
+        <dd>Install the suite in "/dir/to/suite", and register it as "my.suite".</dd>
+        <dt><kbd>rose suite-run -C /dir/to/my.suite</kbd></dt>
+        <dd>Equivalent to (cd /dir/to/my.suite && rose suite-run)</dd>
+        <dt><kbd>rose suite-run -C /dir/to/suite -N my.suite</kbd></dt>
+        <dd>Equivalent to (cd /dir/to/suite && rose suite-run my.suite)</dd>
+    </dl>
+    </p>
+
+    <h3>DESCRIPTION</h3>
+
+    <p>Install and run a Cylc suite.</p>
+
+    <p>Install a suite (in $PWD), register it in Cylc using the basename of the
+    configuration directory or the option specified in --name=NAME. Invoke
+    "cylc run" on it. Arguments (and options after --) are passed to "cylc
+    run".</p>
+
+    <h3>OPTIONS</h3>
+
+    <p>
+    <dl>
+        <dt><kbd>--config=DIR, -C DIR</kbd></dt>
+        <dd>Specify the configuration directory of the suite. (default=$PWD)</dd>
+        <dt><kbd>--define=[SECTION]KEY=VALUE; -D [SECTION]KEY=VALUE</kbd></dt>
+        <dd>Each of this overrides the [SECTION]KEY setting with a given VALUE.
+        Can be used to disable a setting using the syntax --define=[SECTION]!KEY
+        or even --define=[!SECTION].</dd>
+        <dt><kbd>--force, -f</kbd></dt>
+        <dd>Reinstall the suite even if it is already running.</dd>
+        <dt><kbd>--host=HOST</kbd></dt>
+        <dd>Specify a host for running the suite.</dd>
+        <dt><kbd>--install-only, -i</kbd></dt>
+        <dd>Install the suite, but do not run it. (This option is implied if
+        --force mode is specified and the suite is already running.)</dd>
+        <dt><kbd>--name=NAME, -n NAME</kbd></dt>
+        <dd>Specify the suite NAME in Cylc, instead of using the basename of the
+            configuration directory.</dd>
+        <dt><kbd>--new, -N</kbd></dt>
+        <dd>(Re-)create working directories.</dd>
+        <dt><kbd>--no-gcontrol</kbd></dt>
+        <dd>Do not run "cylc gcontrol". Default is to run "cylc gcontrol" if the
+            DISPLAY environment variable is defined.</dd>
+        <dt><kbd>--no-overwrite</kbd></dt>
+        <dd>Do not overwrite existing files.</dd>
+        <dt><kbd>--opt-conf-key=KEY, -O KEY</kbd></dt>
+        <dd>Each of this switches on an optional configuration identified by KEY.</dd>
+        <dt><kbd>--quiet, -q</kbd></dt>
+        <dd>Decrement verbosity.</dd>
+        <dt><kbd>--verbose, -v</kbd></dt>
+        <dd>Increment verbosity.</dd>
+    </dl>
+    </p>
+    
+    <h3>ENVIRONMENT</h3>
+
+    <p>"rose suite-run" provides the following environment variables to the suite:
+    <dl>
+        <dt>ROSE_ORIG_HOST</dt>
+        <dd>The name of the host where the "rose suite-run" command was invoked.</dd>
+    </dl>
+    </p>
+    
+    <h3>JINJA2</h3>
+
+    <p>"rose suite-run" provides the following Jinja2 variables to the suite:
+
+    <dl>
+        <dt>ROSE_ORIG_HOST</dt>
+        <dd>The name of the host where the "rose suite-run" command was invoked.<dd>
+    </dl>
+    
+    <h3>SEE ALSO</h3>
+
+    <p><kbd>cylc help gcontrol</kbd></p>
+    <p><kbd>cylc help register</kbd></p>
+    <p><kbd>cylc help run</kbd></p>
+
+
 <h2><a NAME="rose-suite-scan">rose suite-scan</a></h2><br>
 <h3>NAME</h3>
 
