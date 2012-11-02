@@ -334,223 +334,211 @@
     
     Type <kbd>rose config rose-host-select</kbd> to print settings.</p>
 
-===============================================================================
+    <h2><a NAME="rose-macro">rose macro</a></h2><br>
 
-<h2><a NAME="rose-macro">rose macro</a></h2><br>
-<h3>NAME</h3>
+    <h3>NAME</h3>
+    <p><kbd>rose-macro</kbd></p>
+    <h3>SYNOPSIS</h3>
+    <p><kbd>rose macro [OPTIONS] [MACRO_NAME ...]</kbd></p>
+    <h3>DESCRIPTION</h3>
+    <p>List or run macros associated with a suite or application.</p>
+    <h3>OPTIONS</h3>
 
-<kbd>    rose-macro</kbd><br>
-<br>
-<h3>SYNOPSIS</h3>
+    <p>
+    <dl>
+        <dt><kbd>--all; -a</kbd></dt>
+        <dd>List or run rose internal macros as well as metadata macros.</dd>
+        <dt><kbd>--config=DIR; -C DIR</kbd></dt>
+        <dd>Use configuration in DIR instead of $PWD.</dd>
+        <dt><kbd>--meta-path=PATH; -M PATH</kbd></dt>
+        <dd>Prepend PATH to the metadata search path.</dd>
+        <dt><kbd>--non-interactive, --yes, -y</kbd></dt>
+        <dd>Switch off interactive prompting (=answer yes to everything).</dd>
+        <dt><kbd>--output=DIR; -O DIR</kbd></dt>
+        <dd>The location of the output directory. Only meaningful if
+            there is at least one transformer in the argument list.</dd>
+        <dt><kbd>--quiet; -q</kbd></dt>
+        <dd>Reduce verbosity.</dd>
+        <dt><kbd>--validate; -V</kbd></dt>
+        <dd>Prepend all validators to the argument list.</dd>
+    </dl>
+    </p>
+    
+    <h3>ARGUMENTS</h3>
+    <p>
+    <dl>
+        <dt>MACRO_NAME ...</dt>
+        <dd>A list of macro names to run. If no macro names are specified and
+        <kbd>--validate</kbd> is not used, list all available macros. 
+        Otherwise, run the specified macro names.</dd>
+    </dl>
+    </p>
+    
+    <h2><a NAME="rose-metadata-gen">rose metadata-gen</a></h2>
+    <h3>NAME</h3>
+    <p><kbd>rose metadata-gen</kbd></p>
+    <h3>SYNOPSIS</h3>
+    <p><kbd>rose metadata-gen [OPTIONS] [PROPERTY=VALUE ...]</kbd></p>
+    <h3>DESCRIPTION</h3>
+    <p>Automatically generate metadata from an application or suite
+    configuration. An aid for metadata development.
+    WARNING - May Contain Thorns.</p>
 
-<kbd>    rose macro [OPTIONS] [MACRO_NAME ...]</kbd><br>
-<br>
-<h3>DESCRIPTION</h3>
+    <h3>OPTIONS</h3>
+    
+    <p>
+    <dl>
+        <dt><kbd>--auto-type</kbd></dt>
+        <dd>Add a 'best guess' for the `type` and `length` metadata.</dd>
+        <dt><kbd>--config=DIR, -C DIR</kbd></dt>
+        <dd>The directory containing the application or suite
+            configuration to read in. If not specified, the
+            current directory will be used.</dd>
+        <dt><kbd>--output=DIR, -O DIR</kbd></dt>
+        <dd>A directory to output the metadata to. If not specified,
+            output to the application or suite metadata directory.</dd>
+    </dl>
+    </p>
+    
+    <h3>ARGUMENTS</h3>
 
-    List or run macros associated with a suite or application.<br>
-<br>
-<h3>OPTIONS</h3>
-<dl>
+    <p>
+    <dl>
+        <dt><kbd>PROPERTY[=VALUE] ...</kbd></dt>
+        <dd>One or more key=value pairs of properties to specify for
+            every setting e.g. "compulsory=true". If =VALUE is missing,
+            the property will be set to a null string in each setting.</dd>
+    </dl>
+    </p>
 
-<dt><kbd>    --all; -a</kbd></dt>
-<dd>        List or run rose internal macros as well as metadata macros.</dd>
-<dt><kbd>    --config=DIR; -C DIR</kbd></dt>
-<dd>        Use configuration in DIR instead of $PWD.</dd>
-<dt><kbd>    --meta-path=PATH; -M PATH</kbd></dt>
-<dd>        Prepend PATH to the metadata search path.</dd>
-<dt><kbd>    --non-interactive, --yes, -y</kbd></dt>
-<dd>        Switch off interactive prompting (=answer yes to everything).</dd>
-<dt><kbd>    --output=DIR; -O DIR</kbd></dt>
-<dd>        The location of the output directory. Only meaningful if</dd>
-<dd>        there is at least one transformer in the argument list.</dd>
-<dt><kbd>    --quiet; -q</kbd></dt>
-<dd>        Reduce verbosity.</dd>
-<dt><kbd>    --validate; -V</kbd></dt>
-<dd>        Prepend all validators to the argument list.</dd>
-<dd></dd>
-</dl>
-<h3>ARGUMENTS</h3>
+    <h2><a NAME="rose-mpi-launch">rose mpi-launch</a></h2><br>
+    <h3>NAME</h3>
+    <p><kbd>rose-mpi-launch</kbd></p>
+    <h3>SYNOPSIS</h3>
+    <p><kbd>rose mpi-launch COMMAND [ARGUMENTS ...]</kbd></p>
+    <h3>ARGUMENTS</h3>
+    <p>
+    <dl>
+        <dt>COMMAND</dt>
+        <dd>Command to call. Subsequent arguments are passed to the command.</dd>
+    </dl>
+    </p>
+    
+    <h3>ENVIRONMENT</h3>
+    <p>
+    <dl>
+        <dt><kbd>optional ROSE_LAUNCHER</kbd></dt>
+        <dd>Specifies the launcher program to run the prog.</dd>
+        <dt><kbd>optional ROSE_LAUNCH_INNER</kbd></dt>
+        <dd>Specifies an inner wrapper to be run by launcher, can be set to ""
+            to call the executable directly. Default is "$0 --inner".</dd>
+        <dt><kbd>optional ROSE_LAUNCHER_LIST</kbd></dt>
+        <dd>Specifies an alternative list of launchers.</dd>
+        <dt><kbd>optional ROSE_LAUNCHER_MPICH</kbd></dt>
+        <dd>Specifies the mpich launcher program to run the prog. Default is
+            "mpiexec".</dd>
+        <dt><kbd>optional ROSE_LAUNCHER_PREOPTS</kbd></dt>
+        <dd>Specifies the options to the launcher program to be inserted before
+            the program name.</dd>
+        <dt><kbd>optional ROSE_LAUNCHER_POSTOPTS</kbd></dt>
+        <dd>Specifies the options to the launcher program to be inserted after
+        the program name.</dd>
+        <dt><kbd>optional ROSE_LAUNCHER_ULIMIT_OPTS</kbd></dt>
+        <dd>Specifies the arguments to ulimit. Setting this variable to "-a -s
+            unlimited -d unlimited -a" results in "ulimit -a; ulimit -s unlimited;
+            ulimit -d unlimited; ulimit -a"</dd>
+        <dt><kbd>optional NPROC</kbd></dt>
+        <dd>Specifies the number of processors to run on. Default is 1.</dd>
+    </dl>
+    </p>
+    
+    <h3>DESCRIPTION</h3>
+    <p>Provide a portable way to launch an MPI command.</p>
 
-<dd>    MACRO_NAME ...</dd>
-<dd>        A list of macro names to run. If no macro names are specified and</dd>
-<dd>        --validate is not used, list all available macros. Otherwise, run</dd>
-<dd>        the specified macro names.</dd>
-<dd></dd>
-<h2><a NAME="rose-metadata-gen">rose metadata-gen</a></h2><br>
-<h3>NAME</h3>
+    <h3>DIAGNOSTICS</h3>
+    <p>Return 0 on success, 1 or exit code of COMMAND on failure.</p>
 
-<kbd>    rose metadata-gen</kbd><br>
-<br>
-<h3>SYNOPSIS</h3>
+    <h2><a NAME="rose-namelist-dump">rose namelist-dump</a></h2>
+    <h3>NAME</h3>
+    <p><kbd>rose-namelist-dump</kbd></p>
 
-<kbd>    rose metadata-gen [OPTIONS] [PROPERTY=VALUE ...]</kbd><br>
-<br>
-<h3>DESCRIPTION</h3>
+    <h3>SYNOPSIS</h3>
+    <p><kbd>rose-namelist-dump [OPTIONS] [FILE ...]</kbd></p>
 
-    Automatically generate metadata from an application or suite<br>
-    configuration. An aid for metadata development.<br>
-    WARNING - May Contain Thorns.<br>
-<br>
-<h3>OPTIONS</h3>
-<dl>
+    <h3>DESCRIPTION</h3>
+    <p>Convert namelist files into a Rose application configuration snippet.
+    Each argument should be the path to an empty file or a file containing
+    Fortran namelist groups. A "-" can be used once in the argument list to
+    specify the standard input. If no argument is given, it assumes the
+    standard input is specified. Where possible, use relative path for file
+    names, as the file names appear as-specified in the generated
+    configuration.</p>
 
-<dt><kbd>    --auto-type</kbd></dt>
-<dd>       Add a 'best guess' for the `type` and `length` metadata.</dd>
-<dt><kbd>    --config=DIR, -C DIR</kbd></dt>
-<dd>       The directory containing the application or suite</dd>
-<dd>       configuration to read in. If not specified, the</dd>
-<dd>       current directory will be used.</dd>
-<dt><kbd>    --output=DIR, -O DIR</kbd></dt>
-<dd>       A directory to output the metadata to. If not specified,</dd>
-<dd>       output to the application or suite metadata directory.</dd>
-<dd></dd>
-</dl>
-<h3>ARGUMENTS</h3>
+    <h3>OPTIONS</h3>
+    <p>
+    <dl>
+        <dt><kbd>--case=MODE</kbd></dt>
+        <dd>Output names in lower case (MODE="upper"), upper case (MODE="lower")
+            or unchanged (default).</dd>
+        <dt><kbd>--lower, -l</kbd></dt>
+        <dd>Shorthand for --case=lower.</dd>
+        <dt><kbd>--output=FILE, -o FILE</kbd></dt>
+        <dd>The name of the file for dumping the output. Default is "-", i.e. the
+        <dd>standard output.</dd>
+        <dt><kbd>-u, --upper</kbd></dt>
+        <dd>Shorthand for --case=upper.</dd>
+    </dl>
+    </p>
+    
+    <h2><a NAME="rose-rug-brief-tour">rose rug-brief-tour</a></h2>
+    <h3>NAME</h3>
+    <p><kbd>rose-rug-brief-tour</kbd></p>
 
-<dd>    PROPERTY[=VALUE] ...</dd>
-<dd>       One or more key=value pairs of properties to specify for</dd>
-<dd>       every setting e.g. "compulsory=true". If =VALUE is missing,</dd>
-<dd>       the property will be set to a null string in each setting.</dd>
-<dd></dd>
-<h2><a NAME="rose-mpi-launch">rose mpi-launch</a></h2><br>
-<h3>NAME</h3>
+    <h3>SYNOPSIS</h3>
+    <p><kbd>rose rug-brief-tour</kbd></p>
 
-<kbd>    rose-mpi-launch</kbd><br>
-<br>
-<h3>SYNOPSIS</h3>
+    <h3>DESCRIPTION</h3>
+    <p>Populate the current directory for Rose User Guide: A Brief Tour.</p>
 
-<kbd>    rose mpi-launch COMMAND [ARGUMENTS ...]</kbd><br>
-<br>
-<h3>ARGUMENTS</h3>
+    <h2><a NAME="rose-stem">rose stem</a></h2><br>
+    <h3>NAME</h3>
+    <p><kbd>rose stem</kbd></p>
 
-<dd>    COMMAND</dd>
-<dd>        Command to call. Subsequent arguments are passed to the command.</dd>
-<dd></dd>
-<h3>ENVIRONMENT</h3>
+    <h3>SYNOPSIS</h3>
+    <p><kbd>rose stem [options]</kbd></p>
 
-    optional ROSE_LAUNCHER<br>
-        Specifies the launcher program to run the prog.<br>
-<br>
-    optional ROSE_LAUNCH_INNER<br>
-        Specifies an inner wrapper to be run by launcher, can be set to ""<br>
-        to call the executable directly. Default is "$0 --inner".<br>
-<br>
-    optional ROSE_LAUNCHER_LIST<br>
-        Specifies an alternative list of launchers.<br>
-<br>
-    optional ROSE_LAUNCHER_MPICH<br>
-        Specifies the mpich launcher program to run the prog. Default is<br>
-        "mpiexec".<br>
-<br>
-    optional ROSE_LAUNCHER_PREOPTS<br>
-        Specifies the options to the launcher program to be inserted before<br>
-        the program name.<br>
-<br>
-    optional ROSE_LAUNCHER_POSTOPTS<br>
-        Specifies the options to the launcher program to be inserted after<br>
-        the program name.<br>
-      <br>
-    optional ROSE_LAUNCHER_ULIMIT_OPTS<br>
-        Specifies the arguments to ulimit. Setting this variable to "-a -s<br>
-        unlimited -d unlimited -a" results in "ulimit -a; ulimit -s unlimited;<br>
-        ulimit -d unlimited; ulimit -a"<br>
-<br>
-    optional NPROC<br>
-        Specifies the number of processors to run on. Default is 1.<br>
-<br>
-<h3>DESCRIPTION</h3>
+    <h3>DESCRIPTION</h3>
 
-    Provide a portable way to launch an MPI command.<br>
-<br>
-<h3>DIAGNOSTICS</h3>
+    <p>Run a suitable suite with a specified set of source tree(s). Default
+    values of some of these settings are suite-dependent, specified in the
+    rose-suite.conf file.</p>
 
-    Return 0 on success, 1 or exit code of COMMAND on failure.<br>
-<br>
-<h2><a NAME="rose-namelist-dump">rose namelist-dump</a></h2><br>
-<h3>NAME</h3>
+    <h3>EXAMPLES</h3>
 
-<kbd>    rose-namelist-dump</kbd><br>
-<br>
-<h3>SYNOPSIS</h3>
-
-<kbd>    rose-namelist-dump [OPTIONS] [FILE ...]</kbd><br>
-<br>
-<h3>DESCRIPTION</h3>
-
-    Convert namelist files into a Rose application configuration snippet.<br>
-    Each argument should be the path to an empty file or a file containing<br>
-    Fortran namelist groups. A "-" can be used once in the argument list to<br>
-    specify the standard input. If no argument is given, it assumes the<br>
-    standard input is specified. Where possible, use relative path for file<br>
-    names, as the file names appear as-specified in the generated<br>
-    configuration.<br>
-<br>
-<h3>OPTIONS</h3>
-<dl>
-
-<dt><kbd>    --case=MODE</kbd></dt>
-<dd>        Output names in lower case (MODE="upper"), upper case (MODE="lower")</dd>
-<dd>        or unchanged (default).</dd>
-<dt><kbd>    --lower, -l</kbd></dt>
-<dd>        Shorthand for --case=lower.</dd>
-<dt><kbd>    --output=FILE, -o FILE</kbd></dt>
-<dd>        The name of the file for dumping the output. Default is "-", i.e. the</dd>
-<dd>        standard output.</dd>
-<dt><kbd>    -u, --upper</kbd></dt>
-<dd>        Shorthand for --case=upper.</dd>
-<dd></dd>
-</dl>
-<h2><a NAME="rose-rug-brief-tour">rose rug-brief-tour</a></h2><br>
-<h3>NAME</h3>
-
-<kbd>    rose-rug-brief-tour</kbd><br>
-<br>
-<h3>SYNOPSIS</h3>
-
-<kbd>    rose rug-brief-tour</kbd><br>
-<br>
-<h3>DESCRIPTION</h3>
-
-    Populate the current directory for Rose User Guide: A Brief Tour.<br>
-<br>
-<h2><a NAME="rose-stem">rose stem</a></h2><br>
-<h3>NAME</h3>
-
-<kbd>    rose stem</kbd><br>
-<br>
-<h3>SYNOPSIS</h3>
-
-<kbd>    rose stem [options]</kbd><br>
-<br>
-<h3>DESCRIPTION</h3>
-
-    Run a suitable suite with a specified set of source tree(s). Default <br>
-    values of some of these settings are suite-dependent, specified in the <br>
-    rose-suite.conf file.<br>
-<br>
-<h3>EXAMPLES</h3>
-
+    <p>
+    <pre>
     rose stem --diffsource=$PWD<br>
     rose stem --source=fcm:source_tr@head --task=myjob<br>
     rose stem --source=$PWD -C ~/roses/mot-aa121 --task=myjob --task=yourjob<br>
-<br>
-<h3>OPTIONS</h3>
-<dl>
+    </pre>
+    </p>
 
-<dd>    All options of "rose suite-run" are supported. Additional options are:</dd>
-<dd></dd>
-<dt><kbd>    --confsource=DIR, -c DIR</kbd></dt>
-<dd>        Specify an alterate top-level source tree directory. </dd>
-<dd>        This may be used to locate 'fcm make' config files.</dd>
-<dt><kbd>    --diffsource=SOURCE, -d SOURCE</kbd></dt>
-<dd>        Specify a source tree to add to the trunk as a branch.</dd>
-<dt><kbd>    --source=SOURCE, -s SOURCE</kbd></dt>
-<dd>        Specify a source tree to run as the trunk.</dd>
-<dt><kbd>    --task=TASK, -t TASK</kbd></dt>
-<dd>        Specify a task name or group to run.</dd>
-<dd></dd>
-<dd></dd>
-</dl>
+    <h3>OPTIONS</h3>
+
+    <p>
+    All options of "rose suite-run" are supported. Additional options are:
+    <dl>
+        <dt><kbd>--confsource=DIR, -c DIR</kbd></dt>
+        <dd>Specify an alterate top-level source tree directory.
+            This may be used to locate 'fcm make' config files.</dd>
+        <dt><kbd>--diffsource=SOURCE, -d SOURCE</kbd></dt>
+        <dd>Specify a source tree to add to the trunk as a branch.</dd>
+        <dt><kbd>--source=SOURCE, -s SOURCE</kbd></dt>
+        <dd>Specify a source tree to run as the trunk.</dd>
+        <dt><kbd>--task=TASK, -t TASK</kbd></dt>
+        <dd>Specify a task name or group to run.</dd>
+    </dl>
+    
 <h2><a NAME="rose-suite-gcontrol">rose suite-gcontrol</a></h2><br>
 <h3>NAME</h3>
 
