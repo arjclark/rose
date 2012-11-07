@@ -116,6 +116,7 @@ class SuiteId(object):
     BRANCH_TRUNK = "trunk"
     REV_HEAD = "HEAD"
     svn = SvnCaller()
+    get_status = True
 
     @classmethod
     def get_latest(cls, prefix=None):
@@ -256,7 +257,7 @@ class SuiteId(object):
             raise SuiteIdPrefixError(prefix)
         return node.value.rstrip("/")
 
-    def __init__(self, id_text=None, location=None):
+    def __init__(self, id_text=None, location=None, get_status=True):
         """Initialise either from an id_text or from a location."""
         self.prefix = None
         self.idx = None
@@ -264,6 +265,7 @@ class SuiteId(object):
         self.revision = None
         self.modified = False
         self.out_of_date = False
+        self.get_status = get_status
         if id_text:
             self._from_id_text(id_text)
         elif location:
@@ -330,7 +332,8 @@ class SuiteId(object):
             self.branch = names[self.IDX_LEN]
         if info_entry.has_key("commit:revision"):
             self.revision = info_entry["commit:revision"]
-        self._set_statuses(location)
+        if self.get_status:    
+            self._set_statuses(location)
 
     def _set_statuses(self, path):
         if os.path.exists(path):

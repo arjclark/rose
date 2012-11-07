@@ -188,13 +188,22 @@ def local_suites(argv):
                                                    "reverse", "sort")    
     opts, args = opt_parser.parse_args(argv)
 
+    if opts.quietness:
+        opts.format = FORMAT_QUIET
+    elif not opts.format:
+        opts.format = FORMAT_DEFAULT        
+        
+    if "%local" in opts.format:
+        get_status = True
+    else:
+        get_status = False
+
     ws_client = Client()
     if opts.prefix is not None: 
-
-        results = get_local_suite_details(opts.prefix)
-        return _display_maps(opts, ws_client, results)
+        results = get_local_suite_details(opts.prefix, get_status=get_status)
+        return _display_maps(opts, ws_client, results, get_status=get_status)
     else:
-        id_list = get_local_suites()   
+        id_list = get_local_suites(get_status=get_status)   
         if len(id_list) > 0:
             prefixes = []
             for id_ in id_list:
@@ -208,7 +217,7 @@ def local_suites(argv):
                         if id_.prefix == p:
                             suites_this_prefix.append(id_)
             
-                results = get_local_suite_details(p, id_list)
+                results = get_local_suite_details(p, id_list, get_status=get_status)
                 opts.prefix = p
                 _display_maps(opts, ws_client, results, 
                               local_suites=suites_this_prefix)
@@ -295,7 +304,7 @@ def query_split(args):
     return q
 
 
-def get_local_suites(prefix=None):
+def get_local_suites(prefix=None, get_status=True):
     """Returns a dict of prefixes and id tuples for locally-present suites."""
     local_copies = []
     local_copy_root = SuiteId.get_local_copy_root()
@@ -304,7 +313,7 @@ def get_local_suites(prefix=None):
     for path in os.listdir(local_copy_root):
         location = os.path.join(local_copy_root, path)
         try:
-            id = SuiteId(location=location)
+            id = SuiteId(location=location, get_status=get_status)
         except SuiteIdError as e:
             continue
         if prefix is None or id.prefix == prefix:
@@ -312,7 +321,7 @@ def get_local_suites(prefix=None):
     return local_copies
 
 
-def get_local_suite_details(prefix=None, id_list=None):
+def get_local_suite_details(prefix=None, id_list=None, get_status=True):
     """returns details of the local suites as if they had been obtained using
        a search or query.
        """
@@ -320,7 +329,7 @@ def get_local_suite_details(prefix=None, id_list=None):
         return   
     
     if id_list == None:   
-        id_list = get_local_suites()
+        id_list = get_local_suites(get_status=get_status)
     
     if not id_list:
         return []
@@ -404,7 +413,7 @@ def align(res, keys):
     return res
 
 
-def _display_maps(opts, ws_client, dict_rows, url=None, local_suites=None):
+def _display_maps(opts, ws_client, dict_rows, url=None, local_suites=None, get_status=True):
     """Display returned suite details."""
     report = Reporter(opts.verbosity - opts.quietness)
     popen = RosePopener(event_handler=report)
@@ -413,6 +422,7 @@ def _display_maps(opts, ws_client, dict_rows, url=None, local_suites=None):
         terminal_cols = int(popen('stty size', shell=True)[0].split()[1])
     except:
         terminal_cols = None
+    
     
     if terminal_cols == 0:
         terminal_cols = None
@@ -428,7 +438,7 @@ def _display_maps(opts, ws_client, dict_rows, url=None, local_suites=None):
     all_keys = ws_client.get_known_keys()
     
     if local_suites == None:
-        local_suites = get_local_suites(opts.prefix)
+        local_suites = get_local_suites(opts.prefix, get_status)
 
     check_local = "%local" in opts.format
 
@@ -499,6 +509,8 @@ def main():
 
 if __name__ == '__main__':
     try:
-        main()
+        import cProfile
+        cProfile.run('main()')
+        #main()
     except KeyboardInterrupt:
         pass
