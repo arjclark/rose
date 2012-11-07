@@ -509,8 +509,6 @@ def main():
 
 if __name__ == '__main__':
     try:
-        import cProfile
-        cProfile.run('main()')
-        #main()
+        main()
     except KeyboardInterrupt:
         pass
