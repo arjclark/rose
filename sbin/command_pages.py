@@ -27,9 +27,9 @@ class CmdPage():
             if row.startswith("NAME"):
                 content[i] = ""
             elif row.strip(" ").startswith(self.program):
-                content[i] = "<kbd>"+ row + "</kbd><br>"
+                content[i] = "<kbd>"+ row + "</kbd><br/>"
             else:
-                content[i] = row + "<br>"
+                content[i] = row + "<br/>"
         content.insert(0, self.H3_MASK.format('NAME'))
         return content
         
@@ -42,9 +42,9 @@ class CmdPage():
             if row.startswith("SYNOPSIS"):#
                 content[i] = ""
             elif row.startswith(" "*4 + self.program):
-                content[i] = "<kbd>"+ row + "</kbd><br>"
+                content[i] = "<kbd>"+ row + "</kbd><br/>"
             else:
-                content[i] = row + "<br>"
+                content[i] = row + "<br/>"
         
         content.insert(0, self.H3_MASK.format('SYNOPSIS'))
         return content
@@ -72,12 +72,6 @@ class CmdPage():
     def convert_description(self):
     
         content = self.content['DESCRIPTION']
-        """
-        for i, row in enumerate(content):
-            if row.startswith("DESCRIPTION"):
-                content[i] = "<pre>"
-        content.append("</pre>")
-        """
         
         content.insert(0, self.H3_MASK.format('DESCRIPTION'))
         
@@ -106,17 +100,14 @@ class CmdPage():
             if content[i].startswith(key):
                 content[i] = ""
             else:
-                content[i] = row + "<br>"    
+                content[i] = row + "<br/>"    
         
         content.insert(0, self.H3_MASK.format(key.upper()))
         return content
         
-        
     def get_html(self):
     
         content = []
-    
-        #content += [self.H2_MASK.format(self.program, self.command)]
     
         for k in self.known_sections:
             #grab formatted code
@@ -133,4 +124,30 @@ class CmdPage():
             else:
                 content += self.convert_other(k)
 
-        return content            
+        content = self.tidy_html(content)
+
+        return content
+        
+    def tidy_html(self, html):
+        """Generic tidier for excess space, tags etc"""
+        for i, l in enumerate(html):
+            this_line = l.split(" ")
+            if (i + 1) < len(html):
+                next_line = html[i+1].split(" ")
+            else:
+                next_line = [""]
+            #strip out excess spacing
+            poplist = []
+            for j, w in enumerate(this_line):
+                if w == "":
+                    poplist.insert(0, j)
+                if w.isupper():
+                    this_line[j] = "<var>" + w + "</var>" 
+                
+            for p in poplist:
+                this_line.pop(p)
+
+            html[i] = (" ").join(this_line)
+            
+        return html
+
