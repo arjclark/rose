@@ -59,8 +59,23 @@ class RadioButtonsValueWidget(gtk.HBox):
                                                label=button_label,
                                                use_underline=False)
                 radio_button.real_value = item
+            
+            tip = []    
+            
             if var_titles is not None and var_titles[k]:
-                radio_button.set_tooltip_text("("+item+")")
+                tip.append("("+item+")")
+            
+            print rose.META_PROP_VALUE_HELP + "[" + item[k] + "]"
+
+            if metadata.has_key(rose.META_PROP_VALUE_HELP + "[" + 
+                                item + "]"):
+                print
+                tip.append("something")
+
+            tip = ("\n").join(tip)
+
+            radio_button.set_tooltip_text(tip)
+            
             radio_button.set_active(False)
             if item == self.value:
                 radio_button.set_active(True)

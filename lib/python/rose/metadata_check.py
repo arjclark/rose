@@ -252,7 +252,8 @@ def metadata_check(meta_config, meta_dir=None,
                 continue
             value = opt_node.value
             if (option not in allowed_properties and
-                not option.startswith(rose.META_PROP_WIDGET)):
+                (not option.startswith(rose.META_PROP_WIDGET) and
+                 not option.startswith(rose.META_PROP_VALUE_HELP))):
                 info = UNKNOWN_PROP.format(option)
                 reports.append(rose.macro.MacroReport(section, option,
                                                       value, info))
