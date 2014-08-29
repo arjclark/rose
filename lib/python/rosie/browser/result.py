@@ -91,6 +91,12 @@ class DisplayBox(gtk.VBox):
     def get_info_text(self, path=None):
         """Select a suite to display properties for."""
         idx, branch, revision = self.get_suite_keys_treeview(path)
+        this_iter = self.treestore.get_iter(path)
+        columns = self.treestore.get_n_columns()
+        # use this loop to build up a string like _result_info
+        for i in range(0,columns):
+            print self.treestore.get_value(this_iter,i)
+        # return the string instead of the _result_info text
         return self._result_info[(idx, branch, revision)]
 
     def get_selected_suite_field(self, field=None):
