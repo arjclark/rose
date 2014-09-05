@@ -93,8 +93,34 @@ class DisplayBox(gtk.VBox):
         idx, branch, revision = self.get_suite_keys_treeview(path)
         this_iter = self.treestore.get_iter(path)
         columns = self.treestore.get_n_columns()
-        # use this loop to build up a string like _result_info
-        for i in range(0,columns):
+
+        columns = self.treeview.get_columns()
+        col_key_lookup = {}
+        for i, col in enumerate(columns):
+            field = col.get_widget().get_text()
+            col_key_lookup[field] = i
+            print field
+
+        theline = ""
+
+        for key in sorted(col_key_lookup):
+            print "key is:", key
+            if key in ["idx", "branch", "revision"]:
+                print "ignoring this", key
+                continue
+            value = self.treestore.get_value(this_iter, col_key_lookup[key])
+            if value is None:
+                continue
+            if isinstance(value, list):
+                value = " ".join(value)
+            if key == "date":
+                value = datetime.datetime.fromtimestamp(float(value))
+            line = key + rosie.browser.DELIM_KEYVAL + str(value)
+            theline += theline + "\n"
+        
+        print theline
+
+        for i in range(0,self.treestore.get_n_columns()):
             print self.treestore.get_value(this_iter,i)
         # return the string instead of the _result_info text
         return self._result_info[(idx, branch, revision)]
