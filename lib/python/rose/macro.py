@@ -759,7 +759,7 @@ def pretty_format_config(config, ignore_error=False):
                 if ignore_error is False:
                     _report_error(text=ERROR_MACRO_CASE_MISMATCH.format(
                                   keylist[1], new_keylist[1]))
-                    sys.exit(0)
+                    return
 
 
 def standard_format_config(config):
@@ -851,7 +851,7 @@ def run_macros(config_map, meta_config, config_name, macro_names,
                 macro_name = ".".join([module_name, class_name])
                 macro_names.insert(0, macro_name)
         if not macro_names:
-            sys.exit(0)
+            return
     elif opt_fix:
         for module_name, class_name, method, help in macro_tuples:
             if module_name != rose.macros.__name__:
@@ -860,7 +860,7 @@ def run_macros(config_map, meta_config, config_name, macro_names,
                 macro_name = ".".join([module_name, class_name])
                 macro_names.insert(0, macro_name)
         if not macro_names:
-            sys.exit(0)
+            return
     # List all macros if none are given.
     if not macro_names:
         for module_name, class_name, method, help in macro_tuples:
@@ -870,7 +870,7 @@ def run_macros(config_map, meta_config, config_name, macro_names,
             for help_line in help.split("\n"):
                 reporter(MACRO_OUTPUT_HELP.format(help_line),
                          level=reporter.V, prefix="")
-        sys.exit(0)
+        return
 
     # Categorise macros given as arguments.
     macros_by_type = {}
@@ -891,7 +891,7 @@ def run_macros(config_map, meta_config, config_name, macro_names,
     for macro_name in macros_not_found:
         reporter(MacroNotFoundError(macro_name))
     if macros_not_found:
-        sys.exit(1)
+        return #sys.exit(1)
 
     rc = 0
 
@@ -936,7 +936,7 @@ def run_macros(config_map, meta_config, config_name, macro_names,
             reporter=reporter)
     if not rc and no_changes:
         reporter(MacroFinishNothingEvent())
-    sys.exit(rc)
+    return #rc
 
 
 def report_sort(report1, report2):
@@ -1268,21 +1268,51 @@ def _report_error(exception=None, text=""):
 def main():
     """Run rose macro."""
     add_meta_paths()
-    return_objects = parse_macro_mode_args()
-    if return_objects is None:
-        sys.exit(1)
-    app_config, config_map, meta_config, config_name, args, opts = (
-        return_objects)
-    if opts.conf_dir is not None:
-        os.chdir(opts.conf_dir)
-    opts.conf_dir = os.getcwd()
-    verbosity = 1 + opts.verbosity - opts.quietness
-    run_macros(
-        config_map, meta_config, config_name, args, opts.conf_dir,
-        opts.fix, opts.non_interactive, opts.output_dir,
-        opts.validate_all, verbosity
-    )
+    basedir = os.getcwd()
+    dirlisting = []
+    if "app" in os.listdir(os.getcwd()):
+        appdir = os.path.join(os.getcwd(),"app")
+        subdirs = os.listdir(appdir)
+        for subdir in subdirs:
+            dirlisting.append(os.path.join(appdir, subdir))
+    elif os.getcwd() == "app":
+        appdir = os.getcwd()
+        subdirs = os.listdir(appdir)
+        for subdir in subdirs:
+            dirlisting.append(os.path.join(appdir, subdir))
+    else:
+        dirlisting = [os.getcwd()]
 
+    print dirlisting
+
+
+    firsttime = True
+    for appdir in dirlisting:
+        print appdir
+        # move to dir in dirlisting
+        os.chdir(appdir)
+
+        print os.getcwd()
+
+    for appdir in dirlisting:
+        os.chdir(appdir)
+        return_objects = parse_macro_mode_args()
+
+        if return_objects is not None:
+            app_config, config_map, meta_config, config_name, args, opts = (
+                return_objects)
+            print "Moving to appdir: ", appdir
+            if opts.conf_dir is not None:
+                os.chdir(opts.conf_dir)
+            opts.conf_dir = os.getcwd()
+            verbosity = 1 + opts.verbosity - opts.quietness
+            try:
+                run_macros(
+                    config_map, meta_config, config_name, args, opts.conf_dir,
+                    opts.fix, opts.non_interactive, opts.output_dir,
+                    opts.validate_all, verbosity)
+            except Exception as err:
+                print err
 
 if __name__ == "__main__":
     main()
