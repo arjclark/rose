@@ -309,7 +309,9 @@ class NavPanelHandler(object):
             namespace = "/" + base_ns.lstrip("/")
 
         ui_config_string = """<ui> <popup name='Popup'>"""
-        actions = [('New', gtk.STOCK_NEW,
+        actions = [('Swap', gtk.STOCK_GO_FORWARD,
+                    "Swap to opt config"),
+                   ('New', gtk.STOCK_NEW,
                     rose.config_editor.TREE_PANEL_NEW_CONFIG),
                    ('Add', gtk.STOCK_ADD,
                     rose.config_editor.TREE_PANEL_ADD_GENERIC),
@@ -346,6 +348,9 @@ class NavPanelHandler(object):
             is_top = (namespace in self.data.config.keys())
             is_fixable = bool(self.get_ns_errors(namespace))
             has_content = self.data.helper.is_ns_content(namespace)
+
+            opt_configs = self.data.config[config_name].opt_configs.keys()
+
             is_unsaved = self.data.helper.get_config_has_unsaved_changes(
                 config_name)
             ignored_sections = self.data.helper.get_ignored_sections(namespace)
@@ -354,6 +359,8 @@ class NavPanelHandler(object):
             is_latent = self.data.helper.get_ns_latent_status(namespace)
             latent_sections = self.data.helper.get_latent_sections(namespace)
             metadata, comments = self.get_ns_metadata_and_comments(namespace)
+            if opt_configs:
+                ui_config_string += '<menuitem action="Swap"/>'
             if is_latent:
                 for i, section in enumerate(latent_sections):
                     action_name = "Add {0}".format(i)
